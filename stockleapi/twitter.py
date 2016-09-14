@@ -1,4 +1,3 @@
-import yaml
 import requests
 from requests_oauthlib import OAuth1
 import json
