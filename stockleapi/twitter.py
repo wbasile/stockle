@@ -3,9 +3,10 @@ import requests
 from requests_oauthlib import OAuth1
 import json
 import logging as log
+from os.path import join, dirname
 
 # read the configuration file
-with open('config/config.yaml') as fd_conf:
+with open(join(dirname(__file__),'config/config.yaml')) as fd_conf:
     config = yaml.load(fd_conf)
 
 # OAuth 1 authentication
@@ -19,10 +20,14 @@ def get_keywords_stream(keyword):
     data = {'track':keyword}
     response = requests.post(config['url_filter'], data=data, auth=auth, stream=True)
 
+    tweets = []
     for line in response.iter_lines():
         if line:
             try:
                 tweet = json.loads(line)
-                return(json.dumps(tweet))
+                tweets.append(json.dumps(tweet))
             except:
                 log.error('error parsing tweet')
+        if len(tweets) >= config['response_size']:
+            break
+    return tweets
