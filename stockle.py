@@ -27,15 +27,15 @@ def view_summary():
         #~ dic_finance = finance.get_title(t)
         dic_finance = {"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
         
-        news_items = news.get_items(t)
+        news_items = news.get_items(t)["items"]
         avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
         dic_finance["sentiment_news"] = avg_news_sentiment
         
-        reddit_items = reddit.get_items(t)
+        reddit_items = reddit.get_items(t)["items"]
         avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
         dic_finance["sentiment_reddit"] = avg_reddit_sentiment
         
-        twitter_items = twitter.get_items(t)
+        twitter_items = twitter.get_items(t)["items"]
         avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
         dic_finance["sentiment_twitter"] = avg_twitter_sentiment
         
@@ -52,15 +52,15 @@ def show_title_detail(t):
     #~ dic_finance = finance.get_title(t)
     dic_finance = {"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
     
-    news_items = news.get_items(t)
+    news_items = news.get_items(t)["items"]
     #avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
     dic_finance["news"] = news_items
     
-    reddit_items = reddit.get_items(t)
+    reddit_items = reddit.get_items(t)["items"]
     #~ avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
     dic_finance["reddit"] = reddit_items
     
-    twitter_items = twitter.get_items(t)
+    twitter_items = twitter.get_items(t)["items"]
     #~ avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
     dic_finance["twitter"] = twitter_items
     
