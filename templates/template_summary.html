@@ -1,0 +1,8 @@
+{% extends "template_base.html" %}
+{% block content %}
+    {% for title in title_list %}
+        <p><a href="/detail/{{ title.name }}" >{{ title.name }} </a></p>
+        <p>{{ title }} </p>
+        <hr>
+    {% endfor %}
+{% endblock %}  
