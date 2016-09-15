@@ -5,6 +5,8 @@ import logging as log
 from os.path import join, dirname
 import config
 from alchemy import AlchemyAPI
+import random
+
 
 # OAuth 1 authentication
 auth = OAuth1(config.consumer_key,
@@ -43,3 +45,19 @@ def get_sentiment(keyword):
         except:
             pass
     return sentiment_scores
+
+
+
+def get_items(query,n=10):
+    item_list = []
+    
+    for i in range(n):
+        item = {}
+        item["title"] = "Tweet about "  + query + " " + str(i)
+        item["link"] = "http://www.twitter.com/twitter_" + query + "_" + str(i)
+        item["sentiment"] = random.random() * 2 - 1
+        
+        item_list += [item]
+        
+    return item_list
+    

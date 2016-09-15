@@ -12,3 +12,8 @@ tweet_list_size = 50
 
 # key for Alchemy API
 alchemyapi_key = ""
+
+try:
+    from .config_local import *
+except ImportError:
+    pass

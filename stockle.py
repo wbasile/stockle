@@ -1,3 +1,7 @@
+from stockleapi import finance, reddit, twitter, news
+import numpy as np
+import random
+
 from flask import Flask,render_template
 app = Flask(__name__)
 
@@ -15,21 +19,54 @@ def hello():
 @app.route('/summary')
 def view_summary():
     
-    title_list = [{"name":"IBM","price":15.43,"sentiment_twitter":-0.41},
-                {"name":"Apple","price":5.21,"sentiment_twitter":-0.13},
-                {"name":"Facebook","price":102.01,"sentiment_twitter":0.62},
-                    ]
-    #~ title_list = ["IBM", "Apple","Google","Facebook"]
+    titles = ["AAPL","IBM","FB","GOOG"]
+    
+    title_list = []
+    
+    for t in titles:
+        #~ dic_finance = finance.get_title(t)
+        dic_finance = {"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
+        
+        news_items = news.get_items(t)
+        avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
+        dic_finance["sentiment_news"] = avg_news_sentiment
+        
+        reddit_items = reddit.get_items(t)
+        avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
+        dic_finance["sentiment_reddit"] = avg_reddit_sentiment
+        
+        twitter_items = twitter.get_items(t)
+        avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
+        dic_finance["sentiment_twitter"] = avg_twitter_sentiment
+        
+        title_list += [dic_finance]
     
     
     return render_template('template_summary.html', title_list=title_list)
 
 
     
-@app.route('/detail/<title>')
-def show_title_detail(title):
+@app.route('/detail/<t>')
+def show_title_detail(t):
     # deatails for a given title
-    return 'Title %s' % title
+    #~ dic_finance = finance.get_title(t)
+    dic_finance = {"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
+    
+    news_items = news.get_items(t)
+    #avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
+    dic_finance["news"] = news_items
+    
+    reddit_items = reddit.get_items(t)
+    #~ avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
+    dic_finance["reddit"] = reddit_items
+    
+    twitter_items = twitter.get_items(t)
+    #~ avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
+    dic_finance["twitter"] = twitter_items
+    
+        
+    return render_template('template_detail.html', title = dic_finance["name"],title_dic = dic_finance)
+    
 
 
 #~ @app.route('/post/<int:post_id>')

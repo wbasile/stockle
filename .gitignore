@@ -1,2 +1,2 @@
 *.pyc
-confic/config.py
+stockleapi/config_local.py
