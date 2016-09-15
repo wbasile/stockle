@@ -1,0 +1,21 @@
+{% extends "template_base.html" %}
+{% block content %}   
+    <p><h2>{{ title }} - detail</h2></p>
+    <p>{{ title_dic.name}} </p>
+    <p>Price: {{ title_dic.price}} - Change: {{ title_dic.change}}</p>
+    <h3>News</h3>
+    {% for item in title_dic.news %}
+        <p>{{ item }} </p>
+    {% endfor %}
+    <hr>
+    <h3>Reddit</h3>
+    {% for item in title_dic.reddit %}
+        <p>{{ item }} </p>
+    {% endfor %}
+    <hr>
+    <h3>Twitter</h3>
+    {% for item in title_dic.twitter %}
+        <p>{{ item }} </p>
+    {% endfor %}
+    <hr>
+{% endblock %}  
