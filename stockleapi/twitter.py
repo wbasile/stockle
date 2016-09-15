@@ -18,46 +18,53 @@ auth = OAuth1(config.consumer_key,
 alchemy = AlchemyAPI()
 
 def get_keywords_stream(keyword):
-    # POST data: list of keywords to search
+    # GET arguments: list of keywords to search
     data = {'lang':'en', 'q':keyword ,'count':config.tweet_list_size}
     response = requests.get(config.url_twitter, params=data, auth=auth, stream=True)
     results = response.json()
-    tweets = results['statuses']
+    try:
+        tweets = results['statuses']
+    except:
+        log.error('cannot retrieve tweets')
+        tweets = []
     return tweets
 
 def get_tweets(keyword):
-    tweets = get_keywords_stream(keyword)
-    return [tweet['text'] for tweet in tweets]
+    raw_tweets = get_keywords_stream(keyword)
+    tweets = []
+    for tweet in raw_tweets:
+        tweets.append({'id':tweet['id'], 'text':tweet['text']})
+    return {'tweets':tweets}
 
-def get_sentiment(keyword):
+'''
+def get_items(keyword):
     tweets = get_tweets(keyword)
-    sentiment_scores = []
-    for tweet in tweets:
+    items = {'items':[]}
+    for tweet in tweets['tweets']:
         try:
-            response = alchemy.sentiment_targeted('text', tweet, keyword)
+            response = alchemy.sentiment_targeted('text', tweet['text'], keyword)
             sentiment = response['docSentiment']['type']
             if sentiment == 'positive' or sentiment == 'negative':
                 sentiment_score = eval(response['docSentiment']['score'])
             else:
                 sentiment_score = 0.0
-            print "{0:.2f}\t{1}".format(sentiment_score, tweet)
-            sentiment_scores.append(sentiment_score)
+            items['items'].append({'id' : str(tweet['id']),
+                                   'text' : tweet['text'],
+                                   'sentiment' : sentiment_score})
         except:
             pass
-    return sentiment_scores
+    return items
+'''
 
+def get_items(query):
+    items = {'items':[]}
 
-
-def get_items(query,n=10):
-    item_list = []
-    
-    for i in range(n):
+    for i in range(config.tweet_list_size):
         item = {}
-        item["title"] = "Tweet about "  + query + " " + str(i)
-        item["link"] = "http://www.twitter.com/twitter_" + query + "_" + str(i)
+        item["id"] = "TWEETID" + str(i)
+        item["text"] = "Tweet about " + query + " " + str(i)
         item["sentiment"] = random.random() * 2 - 1
-        
-        item_list += [item]
-        
-    return item_list
-    
+
+        items['items'].append(item)
+
+    return items
