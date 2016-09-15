@@ -1,5 +1,5 @@
 {% extends "template_base.html" %}
-{% block content %}   
+{% block content %}
     <p><h2>{{ title }} - detail</h2></p>
     <p>{{ title_dic.name}} </p>
     <p>Price: {{ title_dic.price}} - Change: {{ title_dic.change}}</p>
@@ -16,6 +16,14 @@
     <h3>Twitter</h3>
     {% for item in title_dic.twitter %}
         <p>{{ item }} </p>
+        <div id="tweet" class="tweet" style="background-color: <?=username_color($user)?>">
+        <blockquote class="twitter-tweet"><p>{{item.text}}</p>&mdash;<?=$user?>
+        <a href="https://twitter.com/stockle/status/{{item.id}}"><?=$date?></a>
+        </blockquote>
+        <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <a href="https://twitter.com/stockle/status/{{item.id}}" target="_blank">
+        view conversation</a>
+        </div>
     {% endfor %}
     <hr>
-{% endblock %}  
+{% endblock %}
