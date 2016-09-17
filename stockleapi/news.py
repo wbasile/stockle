@@ -1,10 +1,7 @@
 import random
 import requests
 import config
-from alchemy import AlchemyAPI
-
-# Create the AlchemyAPI Object
-alchemy = AlchemyAPI()
+import utils
 
 '''
 def get_items(query):
@@ -12,25 +9,21 @@ def get_items(query):
             'outputMode':'json',
             'start':'now-1d',
             'end':'now',
-            'count':config.news_list_size,
+            #'count':config.news_list_size,
             'q.enriched.url.title':query,
             'return':'original.url,enriched.url.title'}
     response = requests.get(config.url_news, params=data)
     results = response.json()
     items = {'items':[]}
     for item in results['result']['docs']:
-        response_sentiment = alchemy.sentiment_targeted('url', item['source']['original']['url'], query)
-        try:
-            sentiment = response_sentiment['docSentiment']['type']
-            if sentiment == 'positive' or sentiment == 'negative':
-                sentiment_score = eval(response_sentiment['docSentiment']['score'])
-            else:
-                sentiment_score = 0.0
+        sentiment_score = utils.get_sentiment(item['source']['original']['url'], 'url', 'targeted', query)
+        if sentiment_score:
             items['items'].append({'title' : item['source']['enriched']['url']['title'],
                                    'url' : item['source']['original']['url'],
                                    'sentiment' : sentiment_score})
-        except:
-            pass
+        # stop cycling when reaching the desired item list size
+        if len(items['items']) >= config.tweet_list_size:
+            break
     return items
 '''
 
