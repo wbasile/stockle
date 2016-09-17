@@ -19,6 +19,12 @@ news_list_size = 50
 # key for Alchemy API
 alchemyapi_key = ""
 
+# user agent for the reddit API
+reddit_agent = 'stockle'
+
+# how may reddit threads are returned
+reddit_list_size = 50
+
 try:
     from .config_local import *
 except ImportError:
