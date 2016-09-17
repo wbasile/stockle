@@ -24,8 +24,8 @@ def view_summary():
     title_list = []
     
     for t in titles:
-        #~ dic_finance = finance.get_title(t)
-        dic_finance = {"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
+        dic_finance = finance.get_title(t)
+        #~ dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
         
         news_items = news.get_items(t)["items"]
         avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
@@ -38,6 +38,45 @@ def view_summary():
         twitter_items = twitter.get_items(t)["items"]
         avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
         dic_finance["sentiment_twitter"] = avg_twitter_sentiment
+        
+        
+        # values for reddit graph
+        reddit_graph_start = min([(avg_reddit_sentiment + 1) *  50 ,50])
+        if avg_reddit_sentiment < 0:
+            reddit_graph_color = "#ff4136"
+        else:
+            reddit_graph_color = "#36ee41"
+        reddit_graph_width = abs(50 - ((avg_reddit_sentiment + 1) *  50))
+        
+        dic_finance["sentiment_reddit_graph_start"] = reddit_graph_start
+        dic_finance["sentiment_reddit_graph_width"] = reddit_graph_width
+        dic_finance["sentiment_reddit_graph_color"] = reddit_graph_color
+        
+        
+        # values for twitter graph
+        twitter_graph_start = min([(avg_twitter_sentiment + 1) *  50 ,50])
+        if avg_twitter_sentiment < 0:
+            twitter_graph_color = "#ff4136"
+        else:
+            twitter_graph_color = "#36ee41"
+        twitter_graph_width = abs(50 - ((avg_twitter_sentiment + 1) *  50))
+        
+        dic_finance["sentiment_twitter_graph_start"] = twitter_graph_start
+        dic_finance["sentiment_twitter_graph_width"] = twitter_graph_width
+        dic_finance["sentiment_twitter_graph_color"] = twitter_graph_color
+        
+        
+        # values for news graph
+        news_graph_start = min([(avg_news_sentiment + 1) *  50 ,50])
+        if avg_news_sentiment < 0:
+            news_graph_color = "#ff4136"
+        else:
+            news_graph_color = "#36ee41"
+        news_graph_width = abs(50 - ((avg_news_sentiment + 1) *  50))
+        
+        dic_finance["sentiment_news_graph_start"] = news_graph_start
+        dic_finance["sentiment_news_graph_width"] = news_graph_width
+        dic_finance["sentiment_news_graph_color"] = news_graph_color
         
         title_list += [dic_finance]
     

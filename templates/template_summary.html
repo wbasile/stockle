@@ -1,8 +1,45 @@
 {% extends "template_base.html" %}
 {% block content %}
     {% for title in title_list %}
-        <p><a href="/detail/{{ title.name }}" >{{ title.name }} </a></p>
-        <p>{{ title }} </p>
+    
+        <div class="title-symbol"><a href="/detail/{{ title.symbol }}" >Title: {{ title.symbol }} </a></div>
+        
+        <div class="title-name">Name: {{ title.name }}</div>
+        
+        <div class="title-price">Price: {{ title.price }}</div>
+        <div class="title-change">Change: {{ title.change }}</div>
+        
+
+        <div class="sentiment" id="reddit">
+            <span class="sentiment-title">Reddit</span>
+            <div class="sentiment-indicator" style="background:#EEEEEE; border:0px; width:100">
+                <div style="margin-left:{{ title.sentiment_reddit_graph_start }}; background:{{ title.sentiment_reddit_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_reddit_graph_width }}">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="sentiment" id="twitter">
+            <span class="sentiment-title">Twitter</span>
+            <div class="sentiment-indicator" style="background:#EEEEEE; border:0px; width:100">
+                <div style="margin-left:{{ title.sentiment_twitter_graph_start }}; background:{{ title.sentiment_twitter_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_twitter_graph_width }}">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="sentiment" id="news">
+            <span class="sentiment-title">News</span>
+            <div class="sentiment-indicator" style="background:#EEEEEE; border:0px; width:100">
+                <div style="margin-left:{{ title.sentiment_news_graph_start }}; background:{{ title.sentiment_news_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_news_graph_width }}">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        
+
         <hr>
     {% endfor %}
 {% endblock %}  
