@@ -14,7 +14,9 @@ auth = OAuth1(config.consumer_key,
               config.oauth_secret)
 
 def get_keywords_stream(keyword):
-    # GET arguments: list of keywords to search
+    """ get tweets ('statuses') from the Twitter search API.
+    API arguments: list of keywords to search, language
+    """
     data = {'lang':'en', 'q':keyword}
     response = requests.get(config.url_twitter, params=data, auth=auth, stream=True)
     results = response.json()
@@ -26,6 +28,9 @@ def get_keywords_stream(keyword):
     return tweets
 
 def get_tweets(keyword):
+    """ get only the ID and the text of the tweets to further process them
+    with sentiment analysis.
+    """
     raw_tweets = get_keywords_stream(keyword)
     tweets = []
     for tweet in raw_tweets:
@@ -34,6 +39,15 @@ def get_tweets(keyword):
 
 '''
 def get_items(keyword):
+    """
+    Access the Twitter API, search for the input keyword. For each tweet pass
+    its text to the sentiment analysis API (AlchemyAPI).
+    Returns a list of tweet IDs with a sentiment score.
+
+    Input: a string containing the name of a company.
+    Output: JSON containing a list of items (id, text, sentiment)
+    """
+
     tweets = get_tweets(keyword)
     items = {'items':[]}
     for tweet in tweets['tweets']:
@@ -49,6 +63,7 @@ def get_items(keyword):
     return items
 '''
 
+# mock data
 def get_items(query):
     return {'items': [
              {'text': u'Ibm 000-m75 take-home examination research and development fire engine: IfZ',
@@ -64,5 +79,5 @@ def get_items(query):
               'id': '777155312390381568',
               'sentiment': 0.264104},
              {'text': u'@SanjayVadia this IBM Watson seems to be the next big thing. Is there everywhere.',
-              'id': '777155208489017345', 
+              'id': '777155208489017345',
              'sentiment': -0.648284}]}
