@@ -15,12 +15,12 @@ def get_items(query):
     API (AlchemyAPI). Returns a list of reddit threads with a sentiment score.
 
     Input: a string containing the name of a company.
-    Output:
+    Output: JSON containing a list of items (title, URL, sentiment)
     """
 
     items = {'items':[]}
 
-    # usa PRAW to search reddit_agent
+    # use PRAW to search reddit_agent
     r = praw.Reddit(config.reddit_agent)
     posts = r.search(query,sort='new',limit=None,syntax='cloudsearch')
 
