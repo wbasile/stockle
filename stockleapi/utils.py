@@ -35,7 +35,7 @@ def get_sentiment(data, source='text', mode='general', query=None):
     except:
         ''' If the targeted entity is not found in the text the statement above
         will fail.'''
-        sentiment_score = None
+        return None
 
     if sentiment == 'positive' or sentiment == 'negative':
         sentiment_score = eval(response_sentiment['docSentiment']['score'])

@@ -4,9 +4,8 @@ import json
 import logging as log
 from os.path import join, dirname
 import config
-from alchemy import AlchemyAPI
+import utils
 import random
-
 
 # OAuth 1 authentication
 auth = OAuth1(config.consumer_key,
@@ -14,12 +13,9 @@ auth = OAuth1(config.consumer_key,
               config.oauth_token,
               config.oauth_secret)
 
-# Create the AlchemyAPI Object
-alchemy = AlchemyAPI()
-
 def get_keywords_stream(keyword):
     # GET arguments: list of keywords to search
-    data = {'lang':'en', 'q':keyword ,'count':config.tweet_list_size}
+    data = {'lang':'en', 'q':keyword}
     response = requests.get(config.url_twitter, params=data, auth=auth, stream=True)
     results = response.json()
     try:
@@ -41,32 +37,32 @@ def get_items(keyword):
     tweets = get_tweets(keyword)
     items = {'items':[]}
     for tweet in tweets['tweets']:
-        try:
-            response = alchemy.sentiment_targeted('text', tweet['text'], keyword)
-            sentiment = response['docSentiment']['type']
-            if sentiment == 'positive' or sentiment == 'negative':
-                sentiment_score = eval(response['docSentiment']['score'])
-            else:
-                sentiment_score = 0.0
+        sentiment_score = utils.get_sentiment(tweet['text'], 'text', 'targeted', keyword)
+        if sentiment_score:
             items['items'].append({'id' : str(tweet['id']),
                                    'text' : tweet['text'],
                                    'sentiment' : sentiment_score})
-        except:
-            pass
-    return items
 
+        # stop cycling when reaching the desired item list size
+        if len(items['items']) >= config.tweet_list_size:
+            break
+    return items
 '''
 
 def get_items(query):
-    return {'items':[
-             {'text': u"my headphone jack isn't working anymore what kind of apple sorcery is this",
-              'id': '776471755049226240',
-              'sentiment': -0.575447},
-             {'text': u'Apple shares jump 2% again ahead of iPhone 7 sales https://t.co/u8OFrrMDOs #Tips2Trade #T2T https://t.co/L7mblr95FV',
-              'id': '776471754399068160',
-              'sentiment': 0.0},
-             {'text': u'Neoliberalism: \u2018Profit Goes To Apple And Microsoft, Not To The Taxpayer\u2019 \u2013 By Kit\xa0O\u2019Connell https://t.co/iaZ0adCw9I https://t.co/hetR4jb0QC',
-              'id': '776471749948944384',
-              'sentiment': -0.321275}]}
-
-    return items
+    return {'items': [
+             {'text': u'Ibm 000-m75 take-home examination research and development fire engine: IfZ',
+              'id': '777155426689224705',
+              'sentiment': 0.460114},
+             {'text': u'Grush captures data and sends them to the IBM #Cloud, where it is analyzed and turn into fun #games https://t.co/BJgjYYLz2u',
+              'id': '777155409551429632',
+              'sentiment': 0.634072},
+             {'text': u'Great presentation from Fletcher @fletcherprevin regarding Mac@IBM, Switch to Macs from PCs. #JAMF https://t.co/8Pb4yK6kcC',
+              'id': '777155371731390467',
+              'sentiment': 0.558004},
+             {'text': u'RT @AlexTarabrinIBM: #Datascientist should join the webcast on Sept. 22nd on IBM Data Science Experience #DSX https://t.co/H6JYinOaFS',
+              'id': '777155312390381568',
+              'sentiment': 0.264104},
+             {'text': u'@SanjayVadia this IBM Watson seems to be the next big thing. Is there everywhere.',
+              'id': '777155208489017345', 
+             'sentiment': -0.648284}]}
