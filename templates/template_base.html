@@ -1,9 +1,9 @@
 <html>
   <head>
     {% if title %}
-    <title>{{ title }} - details</title>
+    <title>{{ title.name }} - Stockle</title>
     {% else %}
-    <title>Summary</title>
+    <title>Stockle</title>
     {% endif %}
     <link rel="stylesheet" href="{{ url_for('static', filename='stockle.css') }}" />
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />

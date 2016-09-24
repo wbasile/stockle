@@ -12,26 +12,40 @@ a:hover {
   text-decoration: underline;
 }
 
-ul#title-list {
+
+ul#title-list,ul.link-list {
   list-style-type: none;
   margin: 0px;
   padding: 0px;
 }
 
-li.title-item {
+li.title-item, li.link-item {
   background: #ffffff;
   font-family: 'Questrial', sans-serif;
   width:99%;
   display: table;
-  padding: 0.5%;
 }
 
-li.title-item:nth-child(odd) {
+li.title-item:nth-child(even), li.link-item:nth-child(odd) {
   background: #a4a8bb;
+}
+
+li.link-item {
+  text-align: left;
+  padding:1%;
+}
+
+li.link-item a {
+  color: #000000;
+}
+
+li.link-item a:hover {
+  color: d83b00;
 }
 
 .title-info {
   display: table-cell;
+  padding: 0.5%;
 }
 
 .title-name {
@@ -72,5 +86,41 @@ li.title-item:nth-child(odd) {
 }
 
 .title-price, .title-change {
-  color: 303030;
+  color: a4a8bb;
+}
+
+#source-container {
+  display: table;
+  text-align: center;
+}
+
+.source {
+  display: table-cell;
+  width: 29%;
+  padding:0.5%;
+  padding-top: 50px;
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+.source#reddit {
+  background-image: url("reddit_icon_small.png");
+}
+
+.source#news {
+  background-image: url("news_icon_small.png");
+}
+
+.source#twitter {
+  background-image: url("twitter_icon_small.png");
+  text-align: center;
+}
+
+.tweet {
+  background-color: a4a8bb;
+}
+
+.twitter-tweet {
+  margin:auto;
+  text-align: center;
 }

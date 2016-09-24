@@ -1,29 +1,44 @@
 {% extends "template_base.html" %}
 {% block content %}
-    <p><h2>{{ title }} - detail</h2></p>
-    <p>{{ title_dic.name}} </p>
-    <p>Price: {{ title_dic.price}} - Change: {{ title_dic.change}}</p>
-    <h3>News</h3>
-    {% for item in title_dic.news %}
-        <p>{{ item }} </p>
-    {% endfor %}
-    <hr>
-    <h3>Reddit</h3>
-    {% for item in title_dic.reddit %}
-        <p>{{ item }} </p>
-    {% endfor %}
-    <hr>
-    <h3>Twitter</h3>
-    {% for item in title_dic.twitter %}
-        <p>{{ item }} </p>
-        <div id="tweet" class="tweet" style="background-color: <?=username_color($user)?>">
-        <blockquote class="twitter-tweet"><p>{{item.text}}</p>&mdash;<?=$user?>
-        <a href="https://twitter.com/stockle/status/{{item.id}}"><?=$date?></a>
-        </blockquote>
-        <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-        <a href="https://twitter.com/stockle/status/{{item.id}}" target="_blank">
-        view conversation</a>
-        </div>
-    {% endfor %}
-    <hr>
+    <div class="title-info">
+      <span class="title-name">{{ title.name }}</span>
+      <span class="title-symbol">{{ title.symbol }}</span>
+      <span class="title-price">{{ title.price }}</span>
+      <span class="title-change">({{ title.change }})</span>
+    </div>
+
+    <div id="source-container">
+      <div class="source" id="news">
+        <ul class="link-list">
+      {% for item in title.news %}
+          <li class="link-item">
+            <a href="{{ item.url }}">{{ item.title}}</a>
+          </li>
+      {% endfor %}
+    </ul>
+      </div>
+
+      <div class="source" id="reddit">
+        <ul class="link-list">
+      {% for item in title.reddit %}
+      <li class="link-item">
+        <a href="{{ item.url }}">{{ item.title}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+      </div>
+
+      <div class="source" id="twitter">
+      {% for item in title.twitter %}
+          <div id="tweet" class="tweet">
+          <blockquote class="twitter-tweet"><p>{{item.text}}</p>&mdash;
+          <a href="https://twitter.com/stockle/status/{{item.id}}">{{item.text}}</a>
+          </blockquote>
+          <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+          <a href="https://twitter.com/stockle/status/{{item.id}}" target="_blank">
+          view conversation</a>
+          </div>
+      {% endfor %}
+    </div>
+</div>
 {% endblock %}
