@@ -1,45 +1,39 @@
 {% extends "template_base.html" %}
 {% block content %}
-    {% for title in title_list %}
-    
-        <div class="title-symbol"><a href="/detail/{{ title.symbol }}" >Title: {{ title.symbol }} </a></div>
-        
-        <div class="title-name">Name: {{ title.name }}</div>
-        
-        <div class="title-price">Price: {{ title.price }}</div>
-        <div class="title-change">Change: {{ title.change }}</div>
-        
+    <ul id="title-list">
+      {% for title in title_list %}
+        <li class="title-item">
+        <div class="title-info">
+          <span class="title-name">{{ title.name }}</span>
+          <span class="title-symbol"><a href="/detail/{{ title.symbol }}" >{{ title.symbol }} </a></span>
+          <span class="title-price">{{ title.price }}</span>
+          <span class="title-change">(){{ title.change }})</span>
+        </div>
 
         <div class="sentiment" id="reddit">
-            <span class="sentiment-title">Reddit</span>
-            <div class="sentiment-indicator" style="background:#EEEEEE; border:0px; width:100">
+            <div class="sentiment-indicator">
                 <div style="margin-left:{{ title.sentiment_reddit_graph_start }}; background:{{ title.sentiment_reddit_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_reddit_graph_width }}">
                     &nbsp;
                 </div>
             </div>
         </div>
-        
-        
+
         <div class="sentiment" id="twitter">
-            <span class="sentiment-title">Twitter</span>
-            <div class="sentiment-indicator" style="background:#EEEEEE; border:0px; width:100">
+            <div class="sentiment-indicator">
                 <div style="margin-left:{{ title.sentiment_twitter_graph_start }}; background:{{ title.sentiment_twitter_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_twitter_graph_width }}">
                     &nbsp;
                 </div>
             </div>
         </div>
-        
-        
+
         <div class="sentiment" id="news">
-            <span class="sentiment-title">News</span>
-            <div class="sentiment-indicator" style="background:#EEEEEE; border:0px; width:100">
+            <div class="sentiment-indicator">
                 <div style="margin-left:{{ title.sentiment_news_graph_start }}; background:{{ title.sentiment_news_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_news_graph_width }}">
                     &nbsp;
                 </div>
             </div>
         </div>
-        
-
-        <hr>
+      </li>
     {% endfor %}
-{% endblock %}  
+  </ul>
+{% endblock %}

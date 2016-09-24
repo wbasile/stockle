@@ -1,0 +1,76 @@
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: d83b00;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul#title-list {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+li.title-item {
+  background: #ffffff;
+  font-family: 'Questrial', sans-serif;
+  width:99%;
+  display: table;
+  padding: 0.5%;
+}
+
+li.title-item:nth-child(odd) {
+  background: #a4a8bb;
+}
+
+.title-info {
+  display: table-cell;
+}
+
+.title-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: large;
+  display:block;
+}
+
+.sentiment {
+  width: 15%;
+  display: table-cell;
+  text-align: center;
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+.sentiment#reddit {
+  background-image: url("reddit_icon_small.png");
+  background-size: contain;
+}
+.sentiment#twitter {
+  background-image: url("twitter_icon_small.png");
+  background-size: contain;
+}
+.sentiment#news {
+  background-image: url("news_icon_small.png");
+  background-size: contain;
+}
+
+.sentiment-indicator {
+  border: 1px green dotted;
+  background:#d0d0d0;
+  width: 100px;
+  margin-left:auto;
+  margin-right:auto;
+
+}
+
+.title-price, .title-change {
+  color: 303030;
+}
