@@ -1,11 +1,14 @@
 {% extends "template_base.html" %}
 {% block content %}
-    <div class="title-info">
-      <span class="title-name">{{ title.name }}</span>
-      <span class="title-symbol">{{ title.symbol }}</span>
-      <span class="title-price">{{ title.price }}</span>
-      <span class="title-change">({{ title.change }})</span>
-    </div>
+      <ul id="title-list">
+        <li class="title-item"><div class="title-info">
+          <span class="title-name">{{ title.name }}</span>
+          <span class="title-symbol">{{ title.symbol }}</span>
+          <span class="title-price">{{ title.price }}</span>
+          <span class="title-change">({{ title.change }}%)</span>
+        </div>
+      </li>
+    </ul>
 
     <div id="source-container">
       <div class="source" id="news">

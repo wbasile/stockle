@@ -30,6 +30,16 @@ li.title-item:nth-child(even), li.link-item:nth-child(odd) {
   background: #a4a8bb;
 }
 
+
+li.title-item:nth-child(even) .title-price, li.title-item:nth-child(even) .title-change {
+  color: #ffffff;
+}
+
+li.title-item:nth-child(odd) .title-price, li.title-item:nth-child(odd) .title-change {
+  color: #a4a8bb;
+}
+
+
 li.link-item {
   text-align: left;
   padding:1%;
@@ -39,8 +49,12 @@ li.link-item a {
   color: #000000;
 }
 
+.title-symbol {
+  color: #d83b00;
+}
+
 li.link-item a:hover {
-  color: d83b00;
+  color: #d83b00;
 }
 
 .title-info {
@@ -53,6 +67,15 @@ li.link-item a:hover {
   font-weight: bold;
   font-size: large;
   display:block;
+}
+
+.title-name a {
+  color: #000000;
+}
+
+.title-name a:hover {
+  color: #000000;
+  text-decoration: none;
 }
 
 .sentiment {
@@ -85,10 +108,6 @@ li.link-item a:hover {
 
 }
 
-.title-price, .title-change {
-  color: a4a8bb;
-}
-
 #source-container {
   display: table;
   text-align: center;
@@ -117,7 +136,7 @@ li.link-item a:hover {
 }
 
 .tweet {
-  background-color: a4a8bb;
+  background-color: #a4a8bb;
 }
 
 .twitter-tweet {

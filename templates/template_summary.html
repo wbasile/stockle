@@ -4,10 +4,10 @@
       {% for title in title_list %}
         <li class="title-item">
         <div class="title-info">
-          <span class="title-name">{{ title.name }}</span>
-          <span class="title-symbol"><a href="/detail/{{ title.symbol }}" >{{ title.symbol }} </a></span>
+          <span class="title-name"><a href="/detail/{{ title.symbol }}" >{{ title.name }}</a></span>
+          <span class="title-symbol"><a href="/detail/{{ title.symbol }}" >{{ title.symbol }}</a></span>
           <span class="title-price">{{ title.price }}</span>
-          <span class="title-change">(){{ title.change }})</span>
+          <span class="title-change">({{ title.change }}%)</span>
         </div>
 
         <div class="sentiment" id="reddit">
