@@ -11,15 +11,15 @@ app = Flask(__name__)
 
 
 def get_graph_data(values):
-        
+
     avg = np.mean(values)
-    
+
     f = float(avg+1) / (2.0)
     # linearly interpolate that value between the colors red and green
     r, g, b = 1-f, f, 0.
     color = '#%02x%02x%02x' % (int(r*255), int(g*255), b)
-   
-    
+
+
     return dict(
             data=[
                 {
@@ -31,10 +31,10 @@ def get_graph_data(values):
                     'boxmean': False,
                     'orientation': 'h',
                     "type": "box",
-                
+
                 },
             ],
-            
+
             layout={
                     'autosize': False,
                       #~ 'width': 140,
@@ -48,8 +48,8 @@ def get_graph_data(values):
                       },
                       'paper_bgcolor': 'rgba(0,0,0,0)',
                       'plot_bgcolor': 'rgba(0,0,0,0)',
-                          
-            
+
+
                     'xaxis': {
                             'range':[-1,1],
                             'zeroline': False,
@@ -61,11 +61,11 @@ def get_graph_data(values):
                     'yaxis':{
                         'showticklabels':False,
                     },
-                }   
+                }
 
         )
-        
-    
+
+
 
 @app.route('/')
 def index():
@@ -80,7 +80,7 @@ def hello():
 @app.route('/summary')
 def view_summary():
 
-    titles = ["AAPL","IBM","FB","GOOG"]
+    titles = ["AAPL", "ADBE","EBAY","GOOGL", "MSFT", "YHOO"]
 
     title_list = []
     graph_ids = []
@@ -98,34 +98,34 @@ def view_summary():
 
         graph_ids += [t+"_graph-summary-reddit"]
         graph_data += [get_graph_data([x["sentiment"] for x in reddit_items])]
-        
+
         graph_ids += [t+"_graph-summary-twitter"]
         graph_data += [get_graph_data([x["sentiment"] for x in twitter_items])]
-        
+
         graph_ids += [t+"_graph-summary-news"]
         graph_data += [get_graph_data([x["sentiment"] for x in news_items])]
-        
+
         title_list += [dic_finance]
 
 
     graph_JSON = json.dumps(graph_data, cls=plotly.utils.PlotlyJSONEncoder)
-    
+
     return render_template('template_summary.html', title_list=title_list,graph_ids=graph_ids,
                            graph_JSON=graph_JSON)
 
-                           
-                           
+
+
 
 @app.route('/detail/<t>')
 def show_title_detail(t):
-    
+
     t = str(unicode(t))
-    
+
     # details for a given title
     dic_finance = finance.get_title(t)
     #~ dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
-    
-    
+
+
     news_items = news.get_items(dic_finance['name'])["items"]
     dic_finance["news"] = news_items
 
@@ -134,11 +134,11 @@ def show_title_detail(t):
 
     twitter_items = twitter.get_items(dic_finance['name'])["items"]
     dic_finance["twitter"] = twitter_items
-    
-    
+
+
     graph_ids = []
     graph_data = []
-    
+
     # create and add summary graphs
     graph_ids += [t+"_graph-summary-reddit"]
     graph_data += [get_graph_data([x["sentiment"] for x in reddit_items])]
@@ -146,8 +146,8 @@ def show_title_detail(t):
     graph_data += [get_graph_data([x["sentiment"] for x in twitter_items])]
     graph_ids += [t+"_graph-summary-news"]
     graph_data += [get_graph_data([x["sentiment"] for x in news_items])]
-        
-       
+
+
     # create and add individual graphs
     for i,x in enumerate(reddit_items):
         graph_ids += [t+"_reddit_"+str(i+1)]
@@ -160,10 +160,10 @@ def show_title_detail(t):
     for i,x in enumerate(news_items):
         graph_ids += [t+"_news_"+str(i+1)]
         graph_data += [get_graph_data([x["sentiment"]])]
-    
+
 
     graph_JSON = json.dumps(graph_data, cls=plotly.utils.PlotlyJSONEncoder)
-    
+
     return render_template('template_detail.html', title = dic_finance,graph_ids=graph_ids,
                            graph_JSON=graph_JSON)
 

@@ -37,8 +37,7 @@ def get_tweets(keyword):
         tweets.append({'id':tweet['id'], 'text':tweet['text']})
     return {'tweets':tweets}
 
-'''
-def get_items(keyword):
+def get_items(keyword, cache=True, mock=False):
     """
     Access the Twitter API, search for the input keyword. For each tweet pass
     its text to the sentiment analysis API (AlchemyAPI).
@@ -48,36 +47,38 @@ def get_items(keyword):
     Output: JSON containing a list of items (id, text, sentiment)
     """
 
-    tweets = get_tweets(keyword)
-    items = {'items':[]}
-    for tweet in tweets['tweets']:
-        sentiment_score = utils.get_sentiment(tweet['text'], 'text', 'targeted', keyword)
-        if sentiment_score:
-            items['items'].append({'id' : str(tweet['id']),
-                                   'text' : tweet['text'],
-                                   'sentiment' : sentiment_score})
+    if cache:
+        with open('cache/twitter_{0}.json'.format(keyword)) as f:
+            items = json.loads(f.read())
+        return items
+    elif mock:
+        return {'items': [
+                 {'text': u'Ibm 000-m75 take-home examination research and development fire engine: IfZ',
+                  'id': '777155426689224705',
+                  'sentiment': 0.460114},
+                 {'text': u'Grush captures data and sends them to the IBM #Cloud, where it is analyzed and turn into fun #games https://t.co/BJgjYYLz2u',
+                  'id': '777155409551429632',
+                  'sentiment': 0.634072},
+                 {'text': u'Great presentation from Fletcher @fletcherprevin regarding Mac@IBM, Switch to Macs from PCs. #JAMF https://t.co/8Pb4yK6kcC',
+                  'id': '777155371731390467',
+                  'sentiment': 0.558004},
+                 {'text': u'RT @AlexTarabrinIBM: #Datascientist should join the webcast on Sept. 22nd on IBM Data Science Experience #DSX https://t.co/H6JYinOaFS',
+                  'id': '777155312390381568',
+                  'sentiment': 0.264104},
+                 {'text': u'@SanjayVadia this IBM Watson seems to be the next big thing. Is there everywhere.',
+                  'id': '777155208489017345',
+                 'sentiment': -0.648284}]}
+    else:
+        tweets = get_tweets(keyword)
+        items = {'items':[]}
+        for tweet in tweets['tweets']:
+            sentiment_score = utils.get_sentiment(tweet['text'], 'text', 'targeted', keyword)
+            if sentiment_score:
+                items['items'].append({'id' : str(tweet['id']),
+                                       'text' : tweet['text'],
+                                       'sentiment' : sentiment_score})
 
-        # stop cycling when reaching the desired item list size
-        if len(items['items']) >= config.tweet_list_size:
-            break
-    return items
-'''
-
-# mock data
-def get_items(query):
-    return {'items': [
-             {'text': u'Ibm 000-m75 take-home examination research and development fire engine: IfZ',
-              'id': '777155426689224705',
-              'sentiment': 0.460114},
-             {'text': u'Grush captures data and sends them to the IBM #Cloud, where it is analyzed and turn into fun #games https://t.co/BJgjYYLz2u',
-              'id': '777155409551429632',
-              'sentiment': 0.634072},
-             {'text': u'Great presentation from Fletcher @fletcherprevin regarding Mac@IBM, Switch to Macs from PCs. #JAMF https://t.co/8Pb4yK6kcC',
-              'id': '777155371731390467',
-              'sentiment': 0.558004},
-             {'text': u'RT @AlexTarabrinIBM: #Datascientist should join the webcast on Sept. 22nd on IBM Data Science Experience #DSX https://t.co/H6JYinOaFS',
-              'id': '777155312390381568',
-              'sentiment': 0.264104},
-             {'text': u'@SanjayVadia this IBM Watson seems to be the next big thing. Is there everywhere.',
-              'id': '777155208489017345',
-             'sentiment': -0.648284}]}
+            # stop cycling when reaching the desired item list size
+            if len(items['items']) >= config.tweet_list_size:
+                break
+        return items
