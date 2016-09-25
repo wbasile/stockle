@@ -1,5 +1,8 @@
 {% extends "template_base.html" %}
 {% block content %}
+
+
+
     <ul id="title-list">
       {% for title in title_list %}
         <li class="title-item">
@@ -10,30 +13,30 @@
           <span class="title-change">({{ title.change }}%)</span>
         </div>
 
-        <div class="sentiment" id="reddit">
-            <div class="sentiment-indicator">
-                <div style="margin-left:{{ title.sentiment_reddit_graph_start }}; background:{{ title.sentiment_reddit_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_reddit_graph_width }}">
-                    &nbsp;
-                </div>
-            </div>
+        <table>
+        <tr>
+            
+        <td>
+        <div id="{{ title.symbol }}_graph-summary-reddit">
         </div>
-
-        <div class="sentiment" id="twitter">
-            <div class="sentiment-indicator">
-                <div style="margin-left:{{ title.sentiment_twitter_graph_start }}; background:{{ title.sentiment_twitter_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_twitter_graph_width }}">
-                    &nbsp;
-                </div>
-            </div>
+        </td>
+        
+        <td>
+        <div id="{{ title.symbol }}_graph-summary-twitter">
         </div>
-
-        <div class="sentiment" id="news">
-            <div class="sentiment-indicator">
-                <div style="margin-left:{{ title.sentiment_news_graph_start }}; background:{{ title.sentiment_news_graph_color }}; border:0px solid #666666; width:{{ title.sentiment_news_graph_width }}">
-                    &nbsp;
-                </div>
-            </div>
+        </td>
+        
+        <td>
+        <div id="{{ title.symbol }}_graph-summary-news">
         </div>
+        </td>
+        
+        </tr>
+        </table>
       </li>
     {% endfor %}
   </ul>
+  
+
+    
 {% endblock %}

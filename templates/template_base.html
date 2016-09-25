@@ -13,4 +13,27 @@
   <body>
     {% block content %}{% endblock %}
   </body>
+  
+  <footer>
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Plotly.js -->
+    <script src="//cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+    <script type="text/javascript">
+
+        var graphs = {{graph_JSON | safe}};
+        var ids = {{graph_ids | safe}};
+
+        for(var i in graphs) {
+            Plotly.plot(ids[i], // the ID of the div, created above
+                        graphs[i].data,
+                        graphs[i].layout || {});
+        }
+
+    </script>
+</footer>
 </html>

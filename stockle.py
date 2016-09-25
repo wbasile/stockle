@@ -2,9 +2,67 @@ from stockleapi import finance, reddit, twitter, news
 import numpy as np
 import random
 
+import json
+import plotly
+
 from flask import Flask,render_template
 app = Flask(__name__)
 
+
+
+def get_graph_data(values):
+    
+    avg = np.mean(values)
+    
+    f = float(avg+1) / (2.0)
+    # linearly interpolate that value between the colors red and green
+    r, g, b = 1-f, f, 0.
+    color = '#%02x%02x%02x' % (int(r*255), int(g*255), b)
+   
+    
+    return dict(
+            data=[
+                {
+                    'x': values,
+                    #~ 'x': [0.2],
+                    'marker': {
+                                'color': color,
+                                },
+                    'boxmean': False,
+                    'orientation': 'h',
+                    "type": "box",
+                
+                },
+            ],
+            
+            layout={
+                    'autosize': False,
+                      'width': 120,
+                      'height': 50,
+                      'margin': {
+                        'l': 5,
+                        'r': 5,
+                        'b': 10,
+                        't': 10,
+                        'pad': 4
+                      },
+                      'paper_bgcolor': '#ffffff',
+                      'plot_bgcolor': '#ffffff',
+                          
+            
+                    'xaxis': {
+                            'range':[-1,1],
+                            'zeroline': True,
+                            'showticklabels':False,
+                        },
+                    'yaxis':{
+                        'showticklabels':False,
+                    },
+                }   
+
+        )
+        
+    
 
 @app.route('/')
 def index():
@@ -22,66 +80,46 @@ def view_summary():
     titles = ["AAPL","IBM","FB","GOOG"]
 
     title_list = []
+    
+    graph_ids = []
+    
+    graph_data = []
 
     for t in titles:
         dic_finance = finance.get_title(t)
         #~ dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
 
         news_items = news.get_items(t)["items"]
-        avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
-        dic_finance["sentiment_news"] = avg_news_sentiment
+        #~ avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
+        #~ dic_finance["sentiment_news"] = avg_news_sentiment
 
         reddit_items = reddit.get_items(t)["items"]
-        avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
-        dic_finance["sentiment_reddit"] = avg_reddit_sentiment
+        #~ avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
+        #~ dic_finance["sentiment_reddit"] = avg_reddit_sentiment
 
         twitter_items = twitter.get_items(t)["items"]
-        avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
-        dic_finance["sentiment_twitter"] = avg_twitter_sentiment
+        #~ avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
+        #~ dic_finance["sentiment_twitter"] = avg_twitter_sentiment
 
-
-        # values for reddit graph
-        reddit_graph_start = min([(avg_reddit_sentiment + 1) *  50 ,50])
-        if avg_reddit_sentiment < 0:
-            reddit_graph_color = "#ff4136"
-        else:
-            reddit_graph_color = "#36ee41"
-        reddit_graph_width = abs(50 - ((avg_reddit_sentiment + 1) *  50))
-
-        dic_finance["sentiment_reddit_graph_start"] = reddit_graph_start
-        dic_finance["sentiment_reddit_graph_width"] = reddit_graph_width
-        dic_finance["sentiment_reddit_graph_color"] = reddit_graph_color
-
-
-        # values for twitter graph
-        twitter_graph_start = min([(avg_twitter_sentiment + 1) *  50 ,50])
-        if avg_twitter_sentiment < 0:
-            twitter_graph_color = "#ff4136"
-        else:
-            twitter_graph_color = "#36ee41"
-        twitter_graph_width = abs(50 - ((avg_twitter_sentiment + 1) *  50))
-
-        dic_finance["sentiment_twitter_graph_start"] = twitter_graph_start
-        dic_finance["sentiment_twitter_graph_width"] = twitter_graph_width
-        dic_finance["sentiment_twitter_graph_color"] = twitter_graph_color
-
-
-        # values for news graph
-        news_graph_start = min([(avg_news_sentiment + 1) *  50 ,50])
-        if avg_news_sentiment < 0:
-            news_graph_color = "#ff4136"
-        else:
-            news_graph_color = "#36ee41"
-        news_graph_width = abs(50 - ((avg_news_sentiment + 1) *  50))
-
-        dic_finance["sentiment_news_graph_start"] = news_graph_start
-        dic_finance["sentiment_news_graph_width"] = news_graph_width
-        dic_finance["sentiment_news_graph_color"] = news_graph_color
+        # values for graphs
+        graph_ids += [t+"_graph-summary-reddit"]
+        graph_data += [get_graph_data([x["sentiment"] for x in reddit_items])]
+        
+        graph_ids += [t+"_graph-summary-twitter"]
+        graph_data += [get_graph_data([x["sentiment"] for x in twitter_items])]
+        
+        graph_ids += [t+"_graph-summary-news"]
+        graph_data += [get_graph_data([x["sentiment"] for x in news_items])]
+        
+        
 
         title_list += [dic_finance]
 
 
-    return render_template('template_summary.html', title_list=title_list)
+    graph_JSON = json.dumps(graph_data, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    return render_template('template_summary.html', title_list=title_list,graph_ids=graph_ids,
+                           graph_JSON=graph_JSON)
 
 
 
