@@ -90,16 +90,15 @@ def show_title_detail(t):
     # deatails for a given title
     dic_finance = finance.get_title(t)
     #dic_finance = {"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
-
-    news_items = news.get_items(t)["items"]
+    news_items = news.get_items(dic_finance['name'])["items"]
     #avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
     dic_finance["news"] = news_items
 
-    reddit_items = reddit.get_items(t)["items"]
+    reddit_items = reddit.get_items(dic_finance['name'])["items"]
     #~ avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
     dic_finance["reddit"] = reddit_items
 
-    twitter_items = twitter.get_items(t)["items"]
+    twitter_items = twitter.get_items(dic_finance['name'])["items"]
     #~ avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
     dic_finance["twitter"] = twitter_items
 
