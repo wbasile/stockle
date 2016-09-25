@@ -12,14 +12,17 @@ app = Flask(__name__)
 
 def get_graph_data(values):
 
-    avg = np.mean(values)
+    try:
+        avg = np.mean(values)
 
-    f = float(avg+1) / (2.0)
-    # linearly interpolate that value between the colors red and green
-    r, g, b = 1-f, f, 0.
-    color = '#%02x%02x%02x' % (int(r*255), int(g*255), b)
-
-
+        f = float(avg+1) / (2.0)
+        # linearly interpolate that value between the colors red and green
+        r, g, b = 1-f, f, 0.
+        color = '#%02x%02x%02x' % (int(r*255), int(g*255), b)
+    except:
+        values = [0]
+        color = "#888800"
+        
     return dict(
             data=[
                 {

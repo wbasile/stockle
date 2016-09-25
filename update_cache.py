@@ -1,6 +1,10 @@
 from stockleapi import finance, reddit, twitter, news
 import json
+import os
 import logging as log
+
+if not os.path.exists("cache"):
+    os.makedirs("cache")
 
 log.basicConfig(level=log.INFO,
                 filename='cache/update.log',
