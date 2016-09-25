@@ -37,14 +37,14 @@ def get_graph_data(values):
             
             layout={
                     'autosize': False,
-                      'width': 120,
+                      'width': 140,
                       'height': 50,
                       'margin': {
-                        'l': 5,
-                        'r': 5,
-                        'b': 10,
-                        't': 10,
-                        'pad': 4
+                        'l': 0,
+                        'r': 0,
+                        'b': 0,
+                        't': 0,
+                        'pad': 1
                       },
                       'paper_bgcolor': '#ffffff',
                       'plot_bgcolor': '#ffffff',
