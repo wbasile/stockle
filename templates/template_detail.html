@@ -1,5 +1,7 @@
 {% extends "template_base.html" %}
 {% block content %}
+
+
       <ul id="title-list">
         <li class="title-item"><div class="title-info">
           <span class="title-name">{{ title.name }}</span>
@@ -12,19 +14,27 @@
 
     <div id="source-container">
       <div class="source" id="news">
+         <div id="{{ title.symbol }}_graph-summary-news">
+            </div>
+            
         <ul class="link-list">
       {% for item in title.news %}
           <li class="link-item">
+            <div id="{{ title.symbol }}_news_{{ loop.index }}"></div>
             <a href="{{ item.url }}">{{ item.title}}</a>
+            
           </li>
       {% endfor %}
     </ul>
       </div>
 
       <div class="source" id="reddit">
+          <div id="{{ title.symbol }}_graph-summary-reddit">
+            </div>
         <ul class="link-list">
       {% for item in title.reddit %}
       <li class="link-item">
+          <div id="{{ title.symbol }}_reddit_{{ loop.index }}"></div>
         <a href="{{ item.url }}">{{ item.title}}</a>
       </li>
       {% endfor %}
@@ -32,8 +42,11 @@
       </div>
 
       <div class="source" id="twitter">
+          <div id="{{ title.symbol }}_graph-summary-twitter">
+            </div>
       {% for item in title.twitter %}
           <div id="tweet" class="tweet">
+              <div id="{{ title.symbol }}_twitter_{{ loop.index }}"></div>
           <blockquote class="twitter-tweet"><p>{{item.text}}</p>&mdash;
           <a href="https://twitter.com/stockle/status/{{item.id}}">{{item.text}}</a>
           </blockquote>

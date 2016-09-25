@@ -1,8 +1,5 @@
 {% extends "template_base.html" %}
 {% block content %}
-
-
-
     <ul id="title-list">
       {% for title in title_list %}
         <li class="title-item">
@@ -13,30 +10,21 @@
           <span class="title-change">({{ title.change }}%)</span>
         </div>
 
-        <table>
-        <tr>
-            
-        <td>
-        <div id="{{ title.symbol }}_graph-summary-reddit">
+        <div class="sentiment" id="reddit">
+            <div id="{{ title.symbol }}_graph-summary-reddit">
+            </div>
         </div>
-        </td>
-        
-        <td>
-        <div id="{{ title.symbol }}_graph-summary-twitter">
+
+        <div class="sentiment" id="twitter">
+            <div id="{{ title.symbol }}_graph-summary-twitter">
+            </div>
         </div>
-        </td>
-        
-        <td>
-        <div id="{{ title.symbol }}_graph-summary-news">
+
+        <div class="sentiment" id="news">
+            <div id="{{ title.symbol }}_graph-summary-news">
+            </div>
         </div>
-        </td>
-        
-        </tr>
-        </table>
       </li>
     {% endfor %}
   </ul>
-  
-
-    
 {% endblock %}

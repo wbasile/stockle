@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 def get_graph_data(values):
-    
+        
     avg = np.mean(values)
     
     f = float(avg+1) / (2.0)
@@ -37,7 +37,7 @@ def get_graph_data(values):
             
             layout={
                     'autosize': False,
-                      'width': 140,
+                      #~ 'width': 140,
                       'height': 50,
                       'margin': {
                         'l': 0,
@@ -46,14 +46,17 @@ def get_graph_data(values):
                         't': 0,
                         'pad': 1
                       },
-                      'paper_bgcolor': '#ffffff',
-                      'plot_bgcolor': '#ffffff',
+                      'paper_bgcolor': 'rgba(0,0,0,0)',
+                      'plot_bgcolor': 'rgba(0,0,0,0)',
                           
             
                     'xaxis': {
                             'range':[-1,1],
-                            'zeroline': True,
+                            'zeroline': False,
                             'showticklabels':False,
+                            'ticks':'',
+                            'showgrid':False,
+                            'showline':False,
                         },
                     'yaxis':{
                         'showticklabels':False,
@@ -80,28 +83,19 @@ def view_summary():
     titles = ["AAPL","IBM","FB","GOOG"]
 
     title_list = []
-    
     graph_ids = []
-    
     graph_data = []
 
     for t in titles:
-        dic_finance = finance.get_title(t)
-        #~ dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
+        #~ dic_finance = finance.get_title(t)
+        dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
 
-        news_items = news.get_items(t)["items"]
-        #~ avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
-        #~ dic_finance["sentiment_news"] = avg_news_sentiment
-
-        reddit_items = reddit.get_items(t)["items"]
-        #~ avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
-        #~ dic_finance["sentiment_reddit"] = avg_reddit_sentiment
-
-        twitter_items = twitter.get_items(t)["items"]
-        #~ avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
-        #~ dic_finance["sentiment_twitter"] = avg_twitter_sentiment
 
         # values for graphs
+        news_items = news.get_items(t)["items"]
+        reddit_items = reddit.get_items(t)["items"]
+        twitter_items = twitter.get_items(t)["items"]
+
         graph_ids += [t+"_graph-summary-reddit"]
         graph_data += [get_graph_data([x["sentiment"] for x in reddit_items])]
         
@@ -111,8 +105,6 @@ def view_summary():
         graph_ids += [t+"_graph-summary-news"]
         graph_data += [get_graph_data([x["sentiment"] for x in news_items])]
         
-        
-
         title_list += [dic_finance]
 
 
@@ -121,27 +113,59 @@ def view_summary():
     return render_template('template_summary.html', title_list=title_list,graph_ids=graph_ids,
                            graph_JSON=graph_JSON)
 
-
+                           
+                           
 
 @app.route('/detail/<t>')
 def show_title_detail(t):
-    # deatails for a given title
+    
+    t = str(unicode(t))
+    
+    # details for a given title
     dic_finance = finance.get_title(t)
-    #dic_finance = {"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
+    #~ dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
+    
+    
     news_items = news.get_items(dic_finance['name'])["items"]
-    #avg_news_sentiment = np.mean([x["sentiment"] for x in news_items])
     dic_finance["news"] = news_items
 
     reddit_items = reddit.get_items(dic_finance['name'])["items"]
-    #~ avg_reddit_sentiment = np.mean([x["sentiment"] for x in reddit_items])
     dic_finance["reddit"] = reddit_items
 
     twitter_items = twitter.get_items(dic_finance['name'])["items"]
-    #~ avg_twitter_sentiment = np.mean([x["sentiment"] for x in twitter_items])
     dic_finance["twitter"] = twitter_items
+    
+    
+    graph_ids = []
+    graph_data = []
+    
+    # create and add summary graphs
+    graph_ids += [t+"_graph-summary-reddit"]
+    graph_data += [get_graph_data([x["sentiment"] for x in reddit_items])]
+    graph_ids += [t+"_graph-summary-twitter"]
+    graph_data += [get_graph_data([x["sentiment"] for x in twitter_items])]
+    graph_ids += [t+"_graph-summary-news"]
+    graph_data += [get_graph_data([x["sentiment"] for x in news_items])]
+        
+       
+    # create and add individual graphs
+    for i,x in enumerate(reddit_items):
+        graph_ids += [t+"_reddit_"+str(i+1)]
+        graph_data += [get_graph_data([x["sentiment"]])]
 
+    for i,x in enumerate(twitter_items):
+        graph_ids += [t+"_twitter_"+str(i+1)]
+        graph_data += [get_graph_data([x["sentiment"]])]
 
-    return render_template('template_detail.html', title = dic_finance)
+    for i,x in enumerate(news_items):
+        graph_ids += [t+"_news_"+str(i+1)]
+        graph_data += [get_graph_data([x["sentiment"]])]
+    
+
+    graph_JSON = json.dumps(graph_data, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    return render_template('template_detail.html', title = dic_finance,graph_ids=graph_ids,
+                           graph_JSON=graph_JSON)
 
 
 
