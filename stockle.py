@@ -47,14 +47,14 @@ def get_graph_data(values):
                       #~ 'width': 140,
                       'height': 50,
                       'margin': {
-                        'l': 2,
-                        'r': 2,
-                        'b': 2,
-                        't': 2,
+                        'l': 0,
+                        'r': 0,
+                        'b': 0,
+                        't': 0,
                         'pad': 1
                       },
-                      'paper_bgcolor': 'rgba(0,0,0,1)',
-                      'plot_bgcolor': 'rgba(255,255,255,1)',
+                      'paper_bgcolor': 'rgba(0,0,0,0)',
+                      'plot_bgcolor': 'rgba(255,255,255,0)',
 
 
                     'xaxis': {
