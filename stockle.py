@@ -47,14 +47,14 @@ def get_graph_data(values):
                       #~ 'width': 140,
                       'height': 50,
                       'margin': {
-                        'l': 0,
-                        'r': 0,
-                        'b': 0,
-                        't': 0,
+                        'l': 2,
+                        'r': 2,
+                        'b': 2,
+                        't': 2,
                         'pad': 1
                       },
-                      'paper_bgcolor': 'rgba(0,0,0,0)',
-                      'plot_bgcolor': 'rgba(0,0,0,0)',
+                      'paper_bgcolor': 'rgba(0,0,0,1)',
+                      'plot_bgcolor': 'rgba(255,255,255,1)',
 
 
                     'xaxis': {
@@ -104,9 +104,9 @@ def view_summary():
         twitter_items = twitter.get_items(t)["items"]
 
         graph = get_graph_data([x["sentiment"] for x in reddit_items])
-        print t
-        print [x["sentiment"] for x in reddit_items]
-        print
+        #~ print t
+        #~ print [x["sentiment"] for x in reddit_items]
+        #~ print
         if graph:
             graph_ids += [t+"_graph-summary-reddit"]
             graph_data += [graph]
