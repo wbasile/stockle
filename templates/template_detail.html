@@ -14,6 +14,7 @@
 
     <div id="source-container">
       <div class="source" id="news">
+          {{ title.symbol }}_graph-summary-news
          <div id="{{ title.symbol }}_graph-summary-news">
             </div>
             
@@ -29,6 +30,7 @@
       </div>
 
       <div class="source" id="reddit">
+          {{ title.symbol }}_graph-summary-reddit
           <div id="{{ title.symbol }}_graph-summary-reddit">
             </div>
         <ul class="link-list">
@@ -42,6 +44,7 @@
       </div>
 
       <div class="source" id="twitter">
+          {{ title.symbol }}_graph-summary-twitter
           <div id="{{ title.symbol }}_graph-summary-twitter">
             </div>
       {% for item in title.twitter %}

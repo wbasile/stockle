@@ -11,6 +11,8 @@ app = Flask(__name__)
 
 
 def get_graph_data(values):
+    
+    values = filter(None,values)
 
     try:
         avg = np.mean(values)
@@ -20,6 +22,7 @@ def get_graph_data(values):
         r, g, b = 1-f, f, 0.
         color = '#%02x%02x%02x' % (int(r*255), int(g*255), b)
     except:
+        return None
         values = [0]
         color = "#888800"
         
@@ -32,6 +35,7 @@ def get_graph_data(values):
                                 'color': color,
                                 },
                     'boxmean': False,
+                    'boxpoints':False,
                     'orientation': 'h',
                     "type": "box",
 
@@ -90,8 +94,8 @@ def view_summary():
     graph_data = []
 
     for t in titles:
-        #~ dic_finance = finance.get_title(t)
-        dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
+        dic_finance = finance.get_title(t)
+        #~ dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
 
 
         # values for graphs
@@ -99,15 +103,24 @@ def view_summary():
         reddit_items = reddit.get_items(t)["items"]
         twitter_items = twitter.get_items(t)["items"]
 
-        graph_ids += [t+"_graph-summary-reddit"]
-        graph_data += [get_graph_data([x["sentiment"] for x in reddit_items])]
+        graph = get_graph_data([x["sentiment"] for x in reddit_items])
+        print t
+        print [x["sentiment"] for x in reddit_items]
+        print
+        if graph:
+            graph_ids += [t+"_graph-summary-reddit"]
+            graph_data += [graph]
 
-        graph_ids += [t+"_graph-summary-twitter"]
-        graph_data += [get_graph_data([x["sentiment"] for x in twitter_items])]
+        graph = get_graph_data([x["sentiment"] for x in twitter_items])
+        if graph:
+            graph_ids += [t+"_graph-summary-twitter"]
+            graph_data += [graph]
 
-        graph_ids += [t+"_graph-summary-news"]
-        graph_data += [get_graph_data([x["sentiment"] for x in news_items])]
-
+        graph = get_graph_data([x["sentiment"] for x in news_items])
+        if graph:
+            graph_ids += [t+"_graph-summary-news"]
+            graph_data += [graph]
+    
         title_list += [dic_finance]
 
 
@@ -129,13 +142,13 @@ def show_title_detail(t):
     #~ dic_finance = {"symbol":t,"name":t, "price":random.random()*100,"change" : random.random()*4 - 2}
 
 
-    news_items = news.get_items(dic_finance['name'])["items"]
+    news_items = news.get_items(dic_finance['symbol'])["items"]
     dic_finance["news"] = news_items
 
-    reddit_items = reddit.get_items(dic_finance['name'])["items"]
+    reddit_items = reddit.get_items(dic_finance['symbol'])["items"]
     dic_finance["reddit"] = reddit_items
 
-    twitter_items = twitter.get_items(dic_finance['name'])["items"]
+    twitter_items = twitter.get_items(dic_finance['symbol'])["items"]
     dic_finance["twitter"] = twitter_items
 
 
@@ -143,26 +156,40 @@ def show_title_detail(t):
     graph_data = []
 
     # create and add summary graphs
-    graph_ids += [t+"_graph-summary-reddit"]
-    graph_data += [get_graph_data([x["sentiment"] for x in reddit_items])]
-    graph_ids += [t+"_graph-summary-twitter"]
-    graph_data += [get_graph_data([x["sentiment"] for x in twitter_items])]
-    graph_ids += [t+"_graph-summary-news"]
-    graph_data += [get_graph_data([x["sentiment"] for x in news_items])]
+    graph = get_graph_data([x["sentiment"] for x in reddit_items])
+    if graph:
+        graph_ids += [t+"_graph-summary-reddit"]
+        graph_data += [graph]
+
+    graph = get_graph_data([x["sentiment"] for x in twitter_items])
+    if graph:
+        graph_ids += [t+"_graph-summary-twitter"]
+        graph_data += [graph]
+
+    graph = get_graph_data([x["sentiment"] for x in news_items])
+    if graph:
+        graph_ids += [t+"_graph-summary-news"]
+        graph_data += [graph]
 
 
     # create and add individual graphs
     for i,x in enumerate(reddit_items):
-        graph_ids += [t+"_reddit_"+str(i+1)]
-        graph_data += [get_graph_data([x["sentiment"]])]
+        graph = get_graph_data([x["sentiment"]])
+        if graph:
+            graph_ids += [t+"_reddit_"+str(i+1)]
+            graph_data += [graph]
 
     for i,x in enumerate(twitter_items):
-        graph_ids += [t+"_twitter_"+str(i+1)]
-        graph_data += [get_graph_data([x["sentiment"]])]
+        graph = get_graph_data([x["sentiment"]])
+        if graph:
+            graph_ids += [t+"_twitter_"+str(i+1)]
+            graph_data += [graph]
 
     for i,x in enumerate(news_items):
-        graph_ids += [t+"_news_"+str(i+1)]
-        graph_data += [get_graph_data([x["sentiment"]])]
+        graph = get_graph_data([x["sentiment"]])
+        if graph:
+            graph_ids += [t+"_news_"+str(i+1)]
+            graph_data += [graph]
 
 
     graph_JSON = json.dumps(graph_data, cls=plotly.utils.PlotlyJSONEncoder)
