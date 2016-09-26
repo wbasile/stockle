@@ -5,7 +5,7 @@ body {
 
 a {
   text-decoration: none;
-  color: d83b00;
+  color: #d83b00;
 }
 
 a:hover {
@@ -66,7 +66,7 @@ li.link-item a:hover {
   font-family: 'Montserrat', sans-serif;
   font-weight: bold;
   font-size: large;
-  display:block;
+  /*display:block;*/
 }
 
 .title-name a {
@@ -115,7 +115,8 @@ li.link-item a:hover {
 
 .source {
   display: table-cell;
-  width: 29%;
+  vertical-align: top;
+  width: 27%;
   padding:0.5%;
   padding-top: 50px;
   background-position: top center;
@@ -142,4 +143,26 @@ li.link-item a:hover {
 .twitter-tweet {
   margin:auto;
   text-align: center;
+}
+
+.js-plotly-plot {
+    width: 200px;
+    background-image: url("sentiment_back.png");
+}
+
+
+.source .js-plotly-plot {
+    margin: 0 auto;
+}
+.source#twitter .js-plotly-plot {
+    margin: 0 auto;
+}
+.sentiment .js-plotly-plot {
+    margin: 0 auto;
+}
+.source#reddit .link-item .js-plotly-plot {
+    float:right;
+}
+.source#news .link-item .js-plotly-plot {
+    float:right;
 }

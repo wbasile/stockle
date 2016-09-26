@@ -15,14 +15,14 @@
     <div id="source-container">
       <div class="source" id="news">
          <div id="{{ title.symbol }}_graph-summary-news">
-            </div>
-            
+         </div>
+
         <ul class="link-list">
       {% for item in title.news %}
           <li class="link-item">
             <div id="{{ title.symbol }}_news_{{ loop.index }}"></div>
             <a href="{{ item.url }}">{{ item.title}}</a>
-            
+
           </li>
       {% endfor %}
     </ul>

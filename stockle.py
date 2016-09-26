@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 def get_graph_data(values):
-    
+
     values = filter(None,values)
 
     try:
@@ -25,7 +25,7 @@ def get_graph_data(values):
         return None
         values = [0]
         color = "#888800"
-        
+
     return dict(
             data=[
                 {
@@ -44,7 +44,7 @@ def get_graph_data(values):
 
             layout={
                     'autosize': False,
-                      #~ 'width': 140,
+                      'width': 200,
                       'height': 50,
                       'margin': {
                         'l': 0,
@@ -120,7 +120,7 @@ def view_summary():
         if graph:
             graph_ids += [t+"_graph-summary-news"]
             graph_data += [graph]
-    
+
         title_list += [dic_finance]
 
 
