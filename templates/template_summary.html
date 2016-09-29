@@ -1,6 +1,22 @@
 {% extends "template_base.html" %}
 {% block content %}
     <ul id="title-list">
+        <li class="title-item" id="header">
+            <div class="title-info">
+                <span class="title-name"><a href="/" >Stockle</a></span>
+                <span class="title-symbol"><a href="/" >start page</a></span>
+            </div>
+            <div class="sentiment-header" id="reddit">
+                &nbsp;
+            </div>
+            <div class="sentiment-header" id="twitter">
+                &nbsp;
+            </div>
+            <div class="sentiment-header" id="news">
+                &nbsp;
+            </div>
+        </li>
+
       {% for title in title_list %}
         <li class="title-item">
         <div class="title-info">

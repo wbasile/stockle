@@ -78,7 +78,7 @@ li.link-item a:hover {
   text-decoration: none;
 }
 
-.sentiment {
+.sentiment,.sentiment-header {
   width: 15%;
   display: table-cell;
   text-align: center;
@@ -86,17 +86,20 @@ li.link-item a:hover {
   background-repeat: no-repeat;
 }
 
-.sentiment#reddit {
+.sentiment-header#reddit {
   background-image: url("reddit_icon_small.png");
-  background-size: contain;
+  background-position: top center;
+  height: 50px;
 }
-.sentiment#twitter {
+.sentiment-header#twitter {
   background-image: url("twitter_icon_small.png");
-  background-size: contain;
+  background-position: top center;
+  height: 50px;
 }
-.sentiment#news {
+.sentiment-header#news {
   background-image: url("news_icon_small.png");
-  background-size: contain;
+  background-position: top center;
+  height: 50px;
 }
 
 .sentiment-indicator {
@@ -136,10 +139,10 @@ li.link-item a:hover {
   text-align: center;
 }
 
-.tweet {
+/*.tweet {
   background-color: #a4a8bb;
 }
-
+*/
 .twitter-tweet {
   margin:auto;
   text-align: center;

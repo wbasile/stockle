@@ -42,19 +42,22 @@
       </div>
 
       <div class="source" id="twitter">
-          <div id="{{ title.symbol }}_graph-summary-twitter">
-            </div>
-      {% for item in title.twitter %}
-          <div id="tweet" class="tweet">
-              <div id="{{ title.symbol }}_twitter_{{ loop.index }}"></div>
-          <blockquote class="twitter-tweet"><p>{{item.text}}</p>&mdash;
-          <a href="https://twitter.com/stockle/status/{{item.id}}">{{item.text}}</a>
-          </blockquote>
-          <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-          <a href="https://twitter.com/stockle/status/{{item.id}}" target="_blank">
-          view conversation</a>
-          </div>
-      {% endfor %}
+        <div id="{{ title.symbol }}_graph-summary-twitter"></div>
+          <ul class="link-list">
+          {% for item in title.twitter %}
+            <li class="link-item">
+                <div id="tweet" class="tweet">
+                <div id="{{ title.symbol }}_twitter_{{ loop.index }}"></div>
+                <blockquote class="twitter-tweet"><p>{{item.text}}</p>&mdash;
+                <a href="https://twitter.com/stockle/status/{{item.id}}">{{item.text}}</a>
+                </blockquote>
+                <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <a href="https://twitter.com/stockle/status/{{item.id}}" target="_blank">
+                view conversation</a>
+                </div>
+            </li>
+          {% endfor %}
+          </ul>
     </div>
 </div>
 {% endblock %}
