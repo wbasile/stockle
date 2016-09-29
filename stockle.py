@@ -22,9 +22,9 @@ def get_graph_data(values):
         r, g, b = 1-f, f, 0.
         color = '#%02x%02x%02x' % (int(r*255), int(g*255), b)
     except:
-        return None
+        #return None
         values = [0]
-        color = "#888800"
+        color = "#888888"
 
     return dict(
             data=[
@@ -76,11 +76,7 @@ def get_graph_data(values):
 
 @app.route('/')
 def index():
-    return 'Index Page'
-
-@app.route('/hello')
-def hello():
-    return 'Hello, World'
+    return app.send_static_file('index.html')
 
 
 
@@ -104,9 +100,8 @@ def view_summary():
         twitter_items = twitter.get_items(t)["items"]
 
         graph = get_graph_data([x["sentiment"] for x in reddit_items])
-        #~ print t
-        #~ print [x["sentiment"] for x in reddit_items]
-        #~ print
+        
+
         if graph:
             graph_ids += [t+"_graph-summary-reddit"]
             graph_data += [graph]
@@ -196,13 +191,6 @@ def show_title_detail(t):
 
     return render_template('template_detail.html', title = dic_finance,graph_ids=graph_ids,
                            graph_JSON=graph_JSON)
-
-
-
-#~ @app.route('/post/<int:post_id>')
-#~ def show_post(post_id):
-    #~ # show the post with the given id, the id is an integer
-    #~ return 'Post %d' % post_id
 
 
 if __name__ == "__main__":
